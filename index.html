@@ -1,115 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>APEX Installation Guide</title>
 
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;
-}
-
 body{
-display:flex;
-background:#f4f6f9;
-color:#333;
+background:#f5f7fb;
+font-family:system-ui,-apple-system,Segoe UI,Roboto;
 }
 
-/* SIDEBAR */
+/* sidebar */
 
 .sidebar{
-width:260px;
 height:100vh;
+position:sticky;
+top:0;
 background:#0f172a;
-color:white;
-padding:25px;
-position:fixed;
-overflow:auto;
-}
-
-.sidebar h2{
-margin-bottom:20px;
-font-size:20px;
+padding-top:20px;
 }
 
 .sidebar a{
-display:block;
 color:#cbd5e1;
+display:block;
+padding:10px 20px;
 text-decoration:none;
-margin:10px 0;
 font-size:14px;
 }
 
 .sidebar a:hover{
+background:#1e293b;
 color:white;
 }
 
-/* CONTENT */
-
-.content{
-margin-left:260px;
-padding:40px;
-width:100%;
-}
-
-/* HEADER */
-
-.header{
-background:white;
-padding:20px;
-border-radius:8px;
-margin-bottom:30px;
-box-shadow:0 2px 10px rgba(0,0,0,0.05);
-}
-
-.header h1{
-font-size:28px;
-}
-
-/* SECTION */
-
-.section{
-background:white;
-padding:25px;
-margin-bottom:25px;
-border-radius:10px;
-box-shadow:0 2px 10px rgba(0,0,0,0.06);
-}
-
-.section h2{
-margin-bottom:15px;
-font-size:22px;
-color:#0f172a;
-}
-
-/* CODE */
+/* code block */
 
 pre{
 background:#0f172a;
 color:#e2e8f0;
 padding:15px;
-border-radius:6px;
-overflow:auto;
+border-radius:8px;
 position:relative;
-margin-top:10px;
 }
 
 .copy-btn{
 position:absolute;
 top:8px;
 right:8px;
-background:#2563eb;
 border:none;
+background:#2563eb;
 color:white;
-padding:4px 8px;
+padding:4px 10px;
 font-size:12px;
-border-radius:4px;
+border-radius:5px;
 cursor:pointer;
 }
 
@@ -117,108 +66,107 @@ cursor:pointer;
 background:#1d4ed8;
 }
 
-/* COLLAPSIBLE */
+/* header */
 
-.collapsible{
-cursor:pointer;
-background:#f1f5f9;
-padding:10px;
-border-radius:5px;
-margin-top:10px;
+.doc-header{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+margin-bottom:30px;
 }
 
-.collapsible:hover{
-background:#e2e8f0;
-}
-
-.collapsible-content{
-display:none;
-padding-top:10px;
-}
-
-/* RESPONSIVE */
-
-@media(max-width:900px){
-
-.sidebar{
-display:none;
-}
-
-.content{
-margin-left:0;
-padding:20px;
-}
-
+.section-card{
+border:none;
+box-shadow:0 2px 10px rgba(0,0,0,0.06);
+border-radius:10px;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="sidebar">
+<div class="container-fluid">
 
-<h2>APEX Docs</h2>
+<div class="row">
+
+<!-- Sidebar -->
+
+<div class="col-md-2 sidebar d-none d-md-block">
+
+<h5 class="text-white px-3 mb-4">APEX Docs</h5>
 
 <a href="#java">Install Java</a>
 <a href="#tomcat">Install Tomcat</a>
 <a href="#tablespace">Create Tablespace</a>
 <a href="#apex">Install APEX</a>
 <a href="#ords">Install ORDS</a>
-<a href="#jasper">Jasper Config</a>
-<a href="#workspace">Create Workspace</a>
+<a href="#jasper">Jasper Reports</a>
+<a href="#workspace">Workspace Setup</a>
 
 </div>
 
 
-<div class="content">
+<!-- Main Content -->
 
-<div class="header">
-<h1>Oracle APEX Installation Guide</h1>
-<p>Documentation Date: 20 July 2025</p>
+<div class="col-md-10 p-4">
+
+<div class="doc-header">
+
+<h2>Oracle APEX Installation Guide</h2>
+<p class="text-muted mb-0">Documentation Date: 20 July 2025</p>
+
 </div>
 
 
-<div class="section" id="java">
+<!-- Java -->
 
-<h2>1. Install Java</h2>
+<div class="card section-card mb-4" id="java">
 
-<div class="collapsible">Remove Existing Java</div>
-<div class="collapsible-content">
+<div class="card-header fw-bold">
+1. Install Java
+</div>
+
+<div class="card-body">
+
+<h6>Remove Existing Java</h6>
 
 <pre>
-<button class="copy-btn">copy</button>
+<button class="copy-btn">Copy</button>
 rpm -aq | grep -i jdk
-yum remove <jdk version>
-dnf remove <jdk version>
+yum remove &lt;jdk version&gt;
+dnf remove &lt;jdk version&gt;
 </pre>
 
-</div>
-
-
-<div class="collapsible">Create Java Directory</div>
-<div class="collapsible-content">
+<h6 class="mt-4">Create Java Directory</h6>
 
 <pre>
-<button class="copy-btn">copy</button>
+<button class="copy-btn">Copy</button>
 mkdir -p /opt/java
 chmod -R 777 /opt/java
 </pre>
 
 </div>
-
 </div>
 
 
 
-<div class="section" id="tomcat">
+<!-- Tomcat -->
 
-<h2>2. Install Apache Tomcat</h2>
+<div class="card section-card mb-4" id="tomcat">
 
-<h3>Tomcat 9091 (Application)</h3>
+<div class="card-header fw-bold">
+2. Install Apache Tomcat
+</div>
+
+<div class="card-body">
+
+<h6>Tomcat 9091 (Application Server)</h6>
 
 <pre>
-<button class="copy-btn">copy</button>
+<button class="copy-btn">Copy</button>
 mkdir -p /opt/tomcat9091
 chmod -R 777 /opt/tomcat9091/*
 
@@ -227,11 +175,10 @@ systemctl start tomcat9091
 systemctl enable tomcat9091
 </pre>
 
-
-<h3>Tomcat 9092 (Jasper Reports)</h3>
+<h6 class="mt-4">Tomcat 9092 (Jasper Reports)</h6>
 
 <pre>
-<button class="copy-btn">copy</button>
+<button class="copy-btn">Copy</button>
 mkdir -p /opt/tomcat9092
 chmod -R 777 /opt/tomcat9092/*
 
@@ -240,15 +187,22 @@ systemctl enable tomcat9092
 </pre>
 
 </div>
+</div>
 
 
 
-<div class="section" id="tablespace">
+<!-- Tablespace -->
 
-<h2>3. Create APEX Tablespaces</h2>
+<div class="card section-card mb-4" id="tablespace">
+
+<div class="card-header fw-bold">
+3. Create Tablespaces
+</div>
+
+<div class="card-body">
 
 <pre>
-<button class="copy-btn">copy</button>
+<button class="copy-btn">Copy</button>
 CREATE TABLESPACE APEX
 DATAFILE 'apex1.dbf'
 SIZE 1G AUTOEXTEND ON;
@@ -259,15 +213,22 @@ SIZE 1G AUTOEXTEND ON;
 </pre>
 
 </div>
+</div>
 
 
 
-<div class="section" id="apex">
+<!-- APEX -->
 
-<h2>4. Install Oracle APEX</h2>
+<div class="card section-card mb-4" id="apex">
+
+<div class="card-header fw-bold">
+4. Install Oracle APEX
+</div>
+
+<div class="card-body">
 
 <pre>
-<button class="copy-btn">copy</button>
+<button class="copy-btn">Copy</button>
 cd /home/oracle
 unzip apex_21.2.zip
 
@@ -278,16 +239,22 @@ sqlplus / as sysdba
 </pre>
 
 </div>
+</div>
 
 
 
-<div class="section" id="ords">
+<!-- ORDS -->
 
-<h2>5. Install ORDS</h2>
+<div class="card section-card mb-4" id="ords">
+
+<div class="card-header fw-bold">
+5. Install ORDS
+</div>
+
+<div class="card-body">
 
 <pre>
-<button class="copy-btn">copy</button>
-cd /home/oracle
+<button class="copy-btn">Copy</button>
 mkdir ords
 cd ords
 
@@ -298,15 +265,22 @@ java -jar medicare.war install
 </pre>
 
 </div>
+</div>
 
 
 
-<div class="section" id="jasper">
+<!-- Jasper -->
 
-<h2>6. Configure Jasper Reports</h2>
+<div class="card section-card mb-4" id="jasper">
+
+<div class="card-header fw-bold">
+6. Configure Jasper Reports
+</div>
+
+<div class="card-body">
 
 <pre>
-<button class="copy-btn">copy</button>
+<button class="copy-btn">Copy</button>
 [datasource:default]
 type=jdbc
 url=jdbc:oracle:thin:@192.168.0.254:1521/msapxpdb
@@ -315,53 +289,63 @@ password=medicare_new
 </pre>
 
 </div>
+</div>
 
 
 
-<div class="section" id="workspace">
+<!-- Workspace -->
 
-<h2>7. Create APEX Workspace</h2>
+<div class="card section-card mb-4" id="workspace">
+
+<div class="card-header fw-bold">
+7. Create APEX Workspace
+</div>
+
+<div class="card-body">
 
 <pre>
-<button class="copy-btn">copy</button>
-Workspace: INTERNAL
-User: admin
-Password: Po1$1wer
+<button class="copy-btn">Copy</button>
+Workspace : INTERNAL
+User      : admin
+Password  : Po1$1wer
 
-Workspace Name: MEDICARE
-ID: 1000001
+Workspace Name : MEDICARE
+Workspace ID   : 1000001
 </pre>
 
 </div>
+</div>
 
 
 </div>
 
+</div>
+
+</div>
 
 
 <script>
 
-/* collapsible */
-
-document.querySelectorAll(".collapsible").forEach(btn=>{
-btn.addEventListener("click",()=>{
-let content=btn.nextElementSibling
-content.style.display = content.style.display==="block"?"none":"block"
-})
-})
-
-/* copy button */
-
 document.querySelectorAll(".copy-btn").forEach(btn=>{
+
 btn.addEventListener("click",()=>{
-let code=btn.parentElement.innerText.replace("copy","")
+
+let code=btn.parentElement.innerText.replace("Copy","")
+
 navigator.clipboard.writeText(code)
-btn.innerText="copied"
-setTimeout(()=>btn.innerText="copy",1500)
+
+btn.innerText="Copied!"
+
+setTimeout(()=>btn.innerText="Copy",1500)
+
 })
+
 })
 
 </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
