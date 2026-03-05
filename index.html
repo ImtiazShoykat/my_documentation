@@ -2,245 +2,311 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Oracle APEX Installation Guide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>APEX Installation Guide</title>
+
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;
+}
+
 body{
-    font-family: Arial, sans-serif;
-    margin:40px;
-    background:#f5f5f5;
-    line-height:1.6;
+display:flex;
+background:#f4f6f9;
+color:#333;
 }
-h1,h2,h3{
-    color:#2c3e50;
+
+/* SIDEBAR */
+
+.sidebar{
+width:260px;
+height:100vh;
+background:#0f172a;
+color:white;
+padding:25px;
+position:fixed;
+overflow:auto;
 }
-.container{
-    background:white;
-    padding:30px;
-    border-radius:8px;
-    box-shadow:0 0 10px rgba(0,0,0,0.1);
+
+.sidebar h2{
+margin-bottom:20px;
+font-size:20px;
 }
+
+.sidebar a{
+display:block;
+color:#cbd5e1;
+text-decoration:none;
+margin:10px 0;
+font-size:14px;
+}
+
+.sidebar a:hover{
+color:white;
+}
+
+/* CONTENT */
+
+.content{
+margin-left:260px;
+padding:40px;
+width:100%;
+}
+
+/* HEADER */
+
+.header{
+background:white;
+padding:20px;
+border-radius:8px;
+margin-bottom:30px;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.header h1{
+font-size:28px;
+}
+
+/* SECTION */
+
+.section{
+background:white;
+padding:25px;
+margin-bottom:25px;
+border-radius:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.06);
+}
+
+.section h2{
+margin-bottom:15px;
+font-size:22px;
+color:#0f172a;
+}
+
+/* CODE */
+
 pre{
-    background:#272822;
-    color:#f8f8f2;
-    padding:15px;
-    overflow:auto;
-    border-radius:5px;
+background:#0f172a;
+color:#e2e8f0;
+padding:15px;
+border-radius:6px;
+overflow:auto;
+position:relative;
+margin-top:10px;
 }
-.note{
-    background:#fff3cd;
-    padding:10px;
-    border-left:5px solid #ffc107;
-    margin:15px 0;
+
+.copy-btn{
+position:absolute;
+top:8px;
+right:8px;
+background:#2563eb;
+border:none;
+color:white;
+padding:4px 8px;
+font-size:12px;
+border-radius:4px;
+cursor:pointer;
 }
+
+.copy-btn:hover{
+background:#1d4ed8;
+}
+
+/* COLLAPSIBLE */
+
+.collapsible{
+cursor:pointer;
+background:#f1f5f9;
+padding:10px;
+border-radius:5px;
+margin-top:10px;
+}
+
+.collapsible:hover{
+background:#e2e8f0;
+}
+
+.collapsible-content{
+display:none;
+padding-top:10px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+.sidebar{
+display:none;
+}
+
+.content{
+margin-left:0;
+padding:20px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="sidebar">
 
+<h2>APEX Docs</h2>
+
+<a href="#java">Install Java</a>
+<a href="#tomcat">Install Tomcat</a>
+<a href="#tablespace">Create Tablespace</a>
+<a href="#apex">Install APEX</a>
+<a href="#ords">Install ORDS</a>
+<a href="#jasper">Jasper Config</a>
+<a href="#workspace">Create Workspace</a>
+
+</div>
+
+
+<div class="content">
+
+<div class="header">
 <h1>Oracle APEX Installation Guide</h1>
-<p><b>Date:</b> 20 July 2025</p>
+<p>Documentation Date: 20 July 2025</p>
+</div>
 
-<hr>
 
-<h2>1. Install Java (JDK & JRE)</h2>
+<div class="section" id="java">
 
-<h3>Remove Existing Java</h3>
+<h2>1. Install Java</h2>
+
+<div class="collapsible">Remove Existing Java</div>
+<div class="collapsible-content">
 
 <pre>
+<button class="copy-btn">copy</button>
 rpm -aq | grep -i jdk
-
-yum remove &lt;jdk version&gt;
-dnf remove &lt;jdk version&gt;
+yum remove <jdk version>
+dnf remove <jdk version>
 </pre>
 
-<h3>Create Java Directory</h3>
+</div>
+
+
+<div class="collapsible">Create Java Directory</div>
+<div class="collapsible-content">
 
 <pre>
+<button class="copy-btn">copy</button>
 mkdir -p /opt/java
 chmod -R 777 /opt/java
 </pre>
 
-<h3>Upload Java Package</h3>
+</div>
 
-<pre>
-cd /opt/java
-chmod -R 777 jdk1.8.0_231.zip
-unzip jdk1.8.0_231.zip
-chmod -R 777 jdk1.8.0_231
-</pre>
+</div>
 
-<h3>Update Environment Variables</h3>
 
-<pre>
-vim /etc/environment
 
-PATH=/usr/bin/:/opt/java/jdk1.8.0_231/bin:/opt/java/jdk1.8.0_231/jre/bin
-JAVA_HOME=/opt/java/jdk1.8.0_231
-JRE_HOME=/opt/java/jdk1.8.0_231/jre
-</pre>
-
-<h3>Reload Environment</h3>
-
-<pre>
-source /etc/environment
-</pre>
-
-<hr>
+<div class="section" id="tomcat">
 
 <h2>2. Install Apache Tomcat</h2>
 
-<p>Two instances will be used:</p>
-
-<ul>
-<li><b>Tomcat 9091</b> → Application Server</li>
-<li><b>Tomcat 9092</b> → Jasper Reports (JRE)</li>
-</ul>
-
-<h3>Tomcat 9091 Setup</h3>
+<h3>Tomcat 9091 (Application)</h3>
 
 <pre>
+<button class="copy-btn">copy</button>
 mkdir -p /opt/tomcat9091
 chmod -R 777 /opt/tomcat9091/*
-
-cp tomcat9091.service /etc/systemd/system/
 
 systemctl daemon-reload
 systemctl start tomcat9091
 systemctl enable tomcat9091
-
-firewall-cmd --zone=public --add-port=9091/tcp --permanent
-firewall-cmd --reload
 </pre>
 
-<h3>Log Directory</h3>
+
+<h3>Tomcat 9092 (Jasper Reports)</h3>
 
 <pre>
-mkdir -p /loganalysis/9091/
-chmod -R 777 /loganalysis/
-</pre>
-
-<h3>Tomcat 9092 Setup</h3>
-
-<pre>
+<button class="copy-btn">copy</button>
 mkdir -p /opt/tomcat9092
 chmod -R 777 /opt/tomcat9092/*
 
-cp tomcat9092.service /etc/systemd/system/
-
-systemctl daemon-reload
 systemctl start tomcat9092
 systemctl enable tomcat9092
-
-firewall-cmd --zone=public --add-port=9092/tcp --permanent
-firewall-cmd --reload
 </pre>
 
-<hr>
+</div>
 
-<h2>3. Create Tablespaces for APEX</h2>
+
+
+<div class="section" id="tablespace">
+
+<h2>3. Create APEX Tablespaces</h2>
 
 <pre>
+<button class="copy-btn">copy</button>
 CREATE TABLESPACE APEX
-DATAFILE 'C:\app\oradata\ORCL\apex1.dbf'
-SIZE 1G AUTOEXTEND ON NEXT 100M MAXSIZE UNLIMITED;
+DATAFILE 'apex1.dbf'
+SIZE 1G AUTOEXTEND ON;
 
 CREATE TABLESPACE APEX_FILE
-DATAFILE 'C:\app\oradata\ORCL\apex_file1.dbf'
-SIZE 1G AUTOEXTEND ON NEXT 100M MAXSIZE UNLIMITED;
+DATAFILE 'apex_file1.dbf'
+SIZE 1G AUTOEXTEND ON;
 </pre>
 
-<hr>
+</div>
+
+
+
+<div class="section" id="apex">
 
 <h2>4. Install Oracle APEX</h2>
 
-<h3>Extract APEX</h3>
-
 <pre>
+<button class="copy-btn">copy</button>
 cd /home/oracle
 unzip apex_21.2.zip
-cd apex
-</pre>
 
-<h3>Install APEX</h3>
-
-<pre>
 sqlplus / as sysdba
-
-alter session set container = orcl;
 
 @apexins.sql APEX APEX_FILE TEMP /i/
 @apxchpwd.sql
 </pre>
 
-<h3>Unlock Required Users</h3>
+</div>
 
-<pre>
-ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;
 
-ALTER USER APEX_PUBLIC_USER IDENTIFIED BY password ACCOUNT UNLOCK;
-ALTER USER APEX_LISTENER IDENTIFIED BY password ACCOUNT UNLOCK;
-ALTER USER APEX_REST_PUBLIC_USER IDENTIFIED BY password ACCOUNT UNLOCK;
-</pre>
 
-<h3>Configure REST Services</h3>
-
-<pre>
-@apex_rest_config.sql
-</pre>
-
-<hr>
+<div class="section" id="ords">
 
 <h2>5. Install ORDS</h2>
 
-<h3>Prepare ORDS Directory</h3>
-
 <pre>
+<button class="copy-btn">copy</button>
 cd /home/oracle
 mkdir ords
 cd ords
-unzip ords-21.3.0.266.1100.zip
-mkdir config
-</pre>
 
-<h3>Rename WAR File</h3>
-
-<pre>
+unzip ords.zip
 mv ords.war medicare.war
-</pre>
 
-<h3>Install ORDS</h3>
-
-<pre>
 java -jar medicare.war install
 </pre>
 
-<h3>Deploy to Tomcat</h3>
+</div>
 
-<pre>
-cp medicare.war /opt/tomcat9091/webapps/
-</pre>
 
-<h3>Copy APEX Images</h3>
 
-<pre>
-cd /home/oracle/apex
-cp -r images /opt/tomcat9091/webapps/
-</pre>
-
-<hr>
+<div class="section" id="jasper">
 
 <h2>6. Configure Jasper Reports</h2>
 
-<h3>Edit Database Configuration</h3>
-
 <pre>
-cd /opt/reports_config/jri/conf
-vim application.properties
-</pre>
-
-<pre>
+<button class="copy-btn">copy</button>
 [datasource:default]
 type=jdbc
 url=jdbc:oracle:thin:@192.168.0.254:1521/msapxpdb
@@ -248,102 +314,54 @@ username=medicare_new
 password=medicare_new
 </pre>
 
-<h3>Configure JRE Path</h3>
-
-<pre>
-cd /opt/tomcat9092/webapps/jri/WEB-INF
-vim web.xml
-</pre>
-
-<pre>
-<context-param>
-<param-name>oc.jasper.config.home</param-name>
-<param-value>/opt/reports_config/jri</param-value>
-</context-param>
-</pre>
-
-<hr>
-
-<h2>7. Access Application</h2>
-
-<pre>
-http://192.168.0.253:9091
-http://192.168.0.253:9091/medicare
-</pre>
-
-<hr>
-
-<h2>8. Create APEX Workspace</h2>
-
-<p>Login using:</p>
-
-<pre>
-Workspace : INTERNAL
-User      : admin
-Password  : Po1$1wer
-</pre>
-
-Create workspace:
-
-<pre>
-Workspace Name : MEDICARE
-Workspace ID   : 1000001
-</pre>
-
-Add developer:
-
-<pre>
-User  : admin
-Email : admin@mysoftltd.com
-Pass  : Po1$1wers
-</pre>
-
-<hr>
-
-<h2>9. Configure Report Server</h2>
-
-Navigate in APEX:
-
-<pre>
-App Builder → Shared Components
-→ Application Definition Attributes
-→ Substitution Strings
-</pre>
-
-Set:
-
-<pre>
-REPORT_SERVER_IP = 192.168.0.253:9092
-</pre>
-
-<hr>
-
-<h2>10. Jasper Login</h2>
-
-<pre>
-Username : admin
-Password : Po1$1wers
-</pre>
-
-<h3>J2EE Server Configuration</h3>
-
-<pre>
-Server : 192.168.0.253
-Port   : 9092
-</pre>
-
-<hr>
-
-<div class="note">
-<b>Note:</b> Run database verification scripts from SYS user if configuration fails.
-Repeat verification until all checks show a green status.
 </div>
 
-<h2>Installation Completed</h2>
 
-<p>Oracle APEX, ORDS, Tomcat, and Jasper Reports are now successfully configured.</p>
+
+<div class="section" id="workspace">
+
+<h2>7. Create APEX Workspace</h2>
+
+<pre>
+<button class="copy-btn">copy</button>
+Workspace: INTERNAL
+User: admin
+Password: Po1$1wer
+
+Workspace Name: MEDICARE
+ID: 1000001
+</pre>
 
 </div>
+
+
+</div>
+
+
+
+<script>
+
+/* collapsible */
+
+document.querySelectorAll(".collapsible").forEach(btn=>{
+btn.addEventListener("click",()=>{
+let content=btn.nextElementSibling
+content.style.display = content.style.display==="block"?"none":"block"
+})
+})
+
+/* copy button */
+
+document.querySelectorAll(".copy-btn").forEach(btn=>{
+btn.addEventListener("click",()=>{
+let code=btn.parentElement.innerText.replace("copy","")
+navigator.clipboard.writeText(code)
+btn.innerText="copied"
+setTimeout(()=>btn.innerText="copy",1500)
+})
+})
+
+</script>
 
 </body>
 </html>
