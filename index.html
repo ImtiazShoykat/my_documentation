@@ -1,2 +1,266 @@
-<h1>test</h1>
+<!DOCTYPE html>
 
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oracle APEX Installation Guide</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+    font-family: 'Inter', sans-serif;
+    margin:0;
+    background:#f5f7fb;
+    color:#333;
+}
+
+header{
+    background:#1e293b;
+    color:white;
+    padding:20px;
+    font-size:22px;
+    font-weight:600;
+}
+
+.container{
+    display:flex;
+}
+
+.sidebar{
+    width:260px;
+    background:#0f172a;
+    color:white;
+    height:100vh;
+    position:sticky;
+    top:0;
+    overflow:auto;
+}
+
+.sidebar h3{
+    padding:20px;
+    margin:0;
+    border-bottom:1px solid #334155;
+}
+
+.sidebar a{
+    display:block;
+    padding:12px 20px;
+    text-decoration:none;
+    color:#cbd5f5;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+}
+
+.content{
+    flex:1;
+    padding:30px;
+}
+
+.section{
+    background:white;
+    padding:25px;
+    border-radius:8px;
+    margin-bottom:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+
+.section h2{
+    margin-top:0;
+}
+
+code{
+    display:block;
+    background:#0f172a;
+    color:#22c55e;
+    padding:15px;
+    border-radius:6px;
+    overflow:auto;
+}
+
+button.copy{
+    float:right;
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button.copy:hover{
+    background:#1d4ed8;
+}
+
+.search{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-bottom:1px solid #ddd;
+}
+
+</style>
+
+<script>
+function copyCode(btn){
+    const code = btn.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code);
+    btn.innerText="Copied!";
+    setTimeout(()=>btn.innerText="Copy",2000);
+}
+
+function searchDocs(){
+    let input=document.getElementById("search").value.toLowerCase();
+    let sections=document.querySelectorAll(".section");
+
+    sections.forEach(sec=>{
+        sec.style.display=sec.innerText.toLowerCase().includes(input)?"block":"none";
+    })
+}
+</script>
+
+</head>
+
+<body>
+
+<header>
+Oracle APEX Installation Guide (20 July 2025)
+</header>
+
+<div class="container">
+
+<div class="sidebar">
+<h3>Sections</h3>
+<input id="search" class="search" placeholder="Search..." onkeyup="searchDocs()">
+
+<a href="#java">Install Java</a> <a href="#tomcat">Install Tomcat</a> <a href="#tablespace">Create Tablespace</a> <a href="#apex">Install APEX</a> <a href="#ords">Install ORDS</a> <a href="#jasper">Jasper Reports</a> <a href="#run">Run Application</a> <a href="#workspace">Create Workspace</a> <a href="#config">Application Config</a>
+
+</div>
+
+<div class="content">
+
+<div id="java" class="section">
+<h2>1. Install Java</h2>
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+rpm -aq | grep -i jdk
+yum remove <jdk version>
+
+mkdir -p /opt/java
+chmod -R 777 /opt/java
+
+cd /opt/java
+unzip jdk1.8.0_231.zip
+
+vim /etc/environment
+
+JAVA_HOME=/opt/java/jdk1.8.0_231
+JRE_HOME=/opt/java/jdk1.8.0_231/jre </code>
+
+</div>
+
+<div id="tomcat" class="section">
+<h2>2. Install Tomcat (9091 & 9092)</h2>
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+sudo mkdir -p /opt/tomcat9091
+sudo systemctl start tomcat9091
+sudo systemctl enable tomcat9091
+
+sudo firewall-cmd --zone=public --add-port=9091/tcp --permanent
+sudo firewall-cmd --reload </code>
+
+</div>
+
+<div id="tablespace" class="section">
+<h2>3. Create Tablespaces</h2>
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+CREATE TABLESPACE APEX
+DATAFILE 'apex1.dbf'
+SIZE 1G AUTOEXTEND ON;
+
+CREATE TABLESPACE APEX_FILE
+DATAFILE 'apex_file1.dbf'
+SIZE 1G AUTOEXTEND ON; </code>
+
+</div>
+
+<div id="apex" class="section">
+<h2>4. Install APEX</h2>
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+cd /home/oracle/apex
+
+sqlplus / as sysdba
+
+@apexins.sql APEX APEX_FILE TEMP /i/
+@apxchpwd.sql </code>
+
+</div>
+
+<div id="ords" class="section">
+<h2>5. Install ORDS</h2>
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+cd /home/oracle
+mkdir ords
+cd ords
+
+unzip ords.zip
+
+java -jar medicare.war install
+
+cp medicare.war /opt/tomcat9091/webapps </code>
+
+</div>
+
+<div id="jasper" class="section">
+<h2>6. Jasper Reports Configuration</h2>
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+url=jdbc:oracle:thin:@192.168.0.254:1521/msapxpdb
+username=medicare_new
+password=medicare_new </code>
+
+</div>
+
+<div id="run" class="section">
+<h2>7. Run Application</h2>
+
+Open browser:
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+http://192.168.0.253:9091
+http://192.168.0.253:9091/medicare </code>
+
+</div>
+
+<div id="workspace" class="section">
+<h2>8. Create APEX Workspace</h2>
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+Workspace : MEDICARE
+Workspace ID : 1000001
+
+User : admin
+Password : Po1$1wers </code>
+
+</div>
+
+<div id="config" class="section">
+<h2>9. Application Configuration</h2>
+
+<button class="copy" onclick="copyCode(this)">Copy</button> <code>
+REPORT_SERVER_IP = 192.168.0.253:9092 </code>
+
+</div>
+
+</div>
+</div>
+
+</body>
+</html>
